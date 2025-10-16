@@ -22,4 +22,5 @@ public class AdminUser {
     // Optional: role
     @Builder.Default
     private String role = "ADMIN";
+
 }

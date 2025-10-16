@@ -62,4 +62,6 @@ public class BootstrapData implements CommandLineRunner {
             eventRepo.saveAll(List.of(e1, e2));
         }
     }
+
+
 }
