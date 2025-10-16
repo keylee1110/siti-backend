@@ -8,8 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
-    @Bean
-    public WebMvcConfigurer corsConfigurer(
+
+    @Bean(name = "apiCorsConfigurer") // tên bean riêng để tránh va chạm về sau
+    public WebMvcConfigurer apiCorsConfigurer(
             @Value("${app.cors.allowed-origins}") String origins) {
         return new WebMvcConfigurer() {
             @Override public void addCorsMappings(CorsRegistry registry) {

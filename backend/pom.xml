@@ -29,7 +29,20 @@
 	<properties>
 		<java.version>21</java.version>
         <springdoc.version>2.6.0</springdoc.version>
+        <jjwt.version>0.11.5</jjwt.version>
+        <aws.sdk.v2.version>2.25.60</aws.sdk.v2.version>
 	</properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-bom</artifactId>
+                <version>2.8.13</version>  <!-- version BOM -->
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,7 +96,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.version}</version>
         </dependency>
         <dependency>
             <groupId>me.paulschwarz</groupId>
