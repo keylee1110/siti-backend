@@ -127,7 +127,7 @@ export async function getPublishedEvents(page = 0, size = 10) {
 }
 
 export async function getEventById(id: string) {
-  return apiCall(`/api/events/${id}`)
+  return apiCall<Event>(`/api/events/${id}`)
 }
 
 export async function submitPartnerInquiry(data: {
