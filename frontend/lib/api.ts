@@ -1,5 +1,10 @@
 import type { AuthState, ApiResponse } from "@/lib/api"
-import type { Event, PaginatedResponse } from "@/lib/types"
+import type {
+  Event,
+  PaginatedResponse,
+  Club,
+  PartnerInquiry,
+} from "@/lib/types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ""
 
@@ -119,7 +124,7 @@ export async function getMe() {
 }
 
 export async function getClubInfo() {
-  return apiCall("/api/club")
+  return apiCall<Club>("/api/club")
 }
 
 export async function getPublishedEvents(page = 0, size = 10) {
@@ -144,13 +149,13 @@ export async function submitPartnerInquiry(data: {
 // Admin endpoints
 export async function getAllEvents(page = 0, size = 10, status?: string) {
   const statusParam = status ? `&status=${status}` : ""
-  return apiCall(`/api/admin/events?page=${page}&size=${size}${statusParam}`, {
+  return apiCall<PaginatedResponse<Event>>(`/api/admin/events?page=${page}&size=${size}${statusParam}`, {
     requiresAuth: true,
   })
 }
 
 export async function createEvent(event: any) {
-  return apiCall("/api/admin/events", {
+  return apiCall<Event>("/api/admin/events", {
     method: "POST",
     body: JSON.stringify(event),
     requiresAuth: true,
@@ -158,7 +163,7 @@ export async function createEvent(event: any) {
 }
 
 export async function updateEvent(id: string, event: any) {
-  return apiCall(`/api/admin/events/${id}`, {
+  return apiCall<Event>(`/api/admin/events/${id}`, {
     method: "PUT",
     body: JSON.stringify(event),
     requiresAuth: true,
@@ -174,9 +179,12 @@ export async function deleteEvent(id: string) {
 
 export async function getPartnerInquiries(page = 0, size = 10, status?: string) {
   const statusParam = status ? `&status=${status}` : ""
-  return apiCall(`/api/admin/partner-inquiries?page=${page}&size=${size}${statusParam}`, {
-    requiresAuth: true,
-  })
+  return apiCall<PaginatedResponse<PartnerInquiry>>(
+    `/api/admin/partner-inquiries?page=${page}&size=${size}${statusParam}`,
+    {
+      requiresAuth: true,
+    },
+  )
 }
 
 export async function updateInquiryStatus(id: string, status: string) {
