@@ -21,14 +21,14 @@ security:
 
 app:
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS},http://localhost:3000
   s3:
     endpoint: ${S3_ENDPOINT}
     region: ${S3_REGION}
     accessKey: ${S3_ACCESS_KEY}
     secretKey: ${S3_SECRET_KEY}
     bucket: ${S3_BUCKET}
-    publicBaseUrl: ${S3_PUBLIC_BASE}
+    publicBaseUrl: ${S3_PUBLIC_BASE:https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev}
   jwt:
     secret: ${security.jwt.secret:${JWT_SECRET}}
     expires-ms: ${security.jwt.expiration-ms:${JWT_EXPIRES_MS:3600000}}
