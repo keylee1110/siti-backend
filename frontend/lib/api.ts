@@ -51,9 +51,12 @@ export async function apiCall<T>(
   }
 
   const isServer = typeof window === "undefined"
-  const finalUrl = isServer
-    ? `http://localhost:8080${endpoint}`
-    : `${API_BASE_URL.replace(/\/$/, '')}${endpoint}`
+  // On the server, use the internal API URL. On the client, use the public one.
+  const baseUrl = isServer
+    ? process.env.INTERNAL_API_URL
+    : process.env.NEXT_PUBLIC_API_URL || ""
+
+  const finalUrl = `${baseUrl}${endpoint}`
 
   const response = await fetch(finalUrl, {
     ...fetchOptions,
