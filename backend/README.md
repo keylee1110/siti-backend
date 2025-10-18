@@ -1,7 +1,7 @@
 # 🌱 SiTiGroup Backend API
 
 Backend API cho **landing page** và **admin panel** của  
-**Câu lạc bộ tổ chức hoạt động xã hội vì cộng đồng – SiTiGroup (FPT University HCM).**
+**Cộng đồng Sinh viên Tình nguyện SiTiGroup (FPT University HCM).**
 
 ---
 
