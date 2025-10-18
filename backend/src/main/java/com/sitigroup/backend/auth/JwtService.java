@@ -1,3 +1,4 @@
+
 package com.sitigroup.backend.auth;
 
 import io.jsonwebtoken.*;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -30,11 +30,11 @@ public class JwtService {
         try {
             // Ưu tiên Base64 (an toàn, chiều dài chuẩn)
             keyBytes = Decoders.BASE64.decode(secretBase64);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {  // Catch tất cả Exception, không chỉ IllegalArgumentException
             // Fallback: nếu ai đó set chuỗi thường không-base64, vẫn cho chạy nếu đủ ≥ 32 bytes
             byte[] raw = secretBase64.getBytes(StandardCharsets.UTF_8);
             if (raw.length < 32) {
-                throw new IllegalStateException("JWT secret too short (<32 bytes). Provide Base64 32+ bytes.");
+                throw new IllegalStateException("JWT secret too short (<32 bytes). Provide Base64 32+ bytes or plain text ≥32 chars.");
             }
             keyBytes = raw;
         }

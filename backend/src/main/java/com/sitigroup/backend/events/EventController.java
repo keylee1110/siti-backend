@@ -1,6 +1,8 @@
 package com.sitigroup.backend.events;
 
 import com.sitigroup.backend.core.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/events")
 @RequiredArgsConstructor
+@Tag(name = "Public", description = "Public endpoints")
 public class EventController {
     private final EventRepository repo;
 
     @GetMapping
+    @Operation(summary = "List published events", description = "Get paginated list of published events")
     public ApiResponse<Map<String, Object>> list(
             @RequestParam(defaultValue = "PUBLISHED") Event.Status status,
             @RequestParam(defaultValue = "0") int page,
@@ -34,11 +38,10 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get event details", description = "Get detailed information about a specific event")
     public ApiResponse<Event> get(@PathVariable String id) {
         var e = repo.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         return ApiResponse.ok(e);
     }
-
-
 }

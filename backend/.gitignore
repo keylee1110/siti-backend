@@ -40,3 +40,8 @@ build/
 # === OS files ===
 .DS_Store
 Thumbs.db
+
+# Internal notes (for AI / personal)
+idea.md
+SiTiGroup_Requirements_MVP.md
+SiTiGroup_TODO_Checklist.md

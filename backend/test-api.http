@@ -1,0 +1,132 @@
+### Variables
+@baseUrl = http://localhost:8080
+@adminEmail = admin@sitigroup.com
+@adminPassword = admin123
+
+### 1. Health Check
+GET {{baseUrl}}/actuator/health
+
+### 2. Get Club Info (Public)
+GET {{baseUrl}}/api/club
+
+### 3. List Published Events (Public)
+GET {{baseUrl}}/api/events?status=PUBLISHED&page=0&size=10
+
+### 4. Get Event by ID (Public)
+GET {{baseUrl}}/api/events/1
+
+### 5. Admin Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+> {%
+    client.global.set("csrf_token", response.body.csrf);
+    client.log("CSRF Token: " + response.body.csrf);
+%}
+
+### 6. Get Current User (Admin)
+GET {{baseUrl}}/api/auth/me
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+### 7. Request Pre-signed URL (Admin)
+POST {{baseUrl}}/api/admin/uploads/presign
+Content-Type: application/json
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+{
+  "filename": "event-banner.png",
+  "contentType": "image/png",
+  "directory": "events",
+  "expiresMinutes": 10
+}
+
+### 8. List All Events (Admin)
+GET {{baseUrl}}/api/admin/events?page=0&size=10
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+
+### 9. Create Event (Admin)
+POST {{baseUrl}}/api/admin/events
+Content-Type: application/json
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+{
+  "title": "Volunteer Event 2025",
+  "summary": "A meaningful community service event",
+  "description": "Join us for a day of giving back to the community...",
+  "startAt": "2025-03-15T09:00:00",
+  "endAt": "2025-03-15T17:00:00",
+  "location": {
+    "name": "FPT University HCM Campus",
+    "lat": 10.8411,
+    "lng": 106.8098
+  },
+  "coverImage": "https://cdn.example.com/events/banner.png",
+  "gallery": [
+    "https://cdn.example.com/events/photo1.png",
+    "https://cdn.example.com/events/photo2.png"
+  ],
+  "status": "DRAFT"
+}
+
+### 10. Update Event (Admin)
+PUT {{baseUrl}}/api/admin/events/1
+Content-Type: application/json
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+{
+  "title": "Updated Event Title",
+  "status": "PUBLISHED"
+}
+
+### 11. Delete Event (Admin)
+DELETE {{baseUrl}}/api/admin/events/1
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+### 12. Submit Partner Inquiry (Public)
+POST {{baseUrl}}/api/partner-inquiries
+Content-Type: application/json
+
+{
+  "orgName": "ABC Corporation",
+  "contactEmail": "contact@abc.com",
+  "message": "We are interested in partnering with SiTiGroup for upcoming events."
+}
+
+### 13. List Partner Inquiries (Admin)
+GET {{baseUrl}}/api/admin/partner-inquiries?page=0&size=10
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+
+### 14. Update Inquiry Status (Admin)
+PUT {{baseUrl}}/api/admin/partner-inquiries/1
+Content-Type: application/json
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+{
+  "status": "REPLIED"
+}
+
+### 15. Admin Logout
+POST {{baseUrl}}/api/auth/logout
+Cookie: siti_token={{auth_token}}; siti_csrf={{csrf_token}}
+X-CSRF-Token: {{csrf_token}}
+
+### 16. Test Rate Limiting - Submit Multiple Inquiries
+POST {{baseUrl}}/api/partner-inquiries
+Content-Type: application/json
+
+{
+  "orgName": "Test Org {{$random.integer(1, 1000)}}",
+  "contactEmail": "test{{$random.integer(1, 1000)}}@example.com",
+  "message": "Rate limit test message"
+}

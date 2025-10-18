@@ -17,27 +17,28 @@ logging:
 security:
   jwt:
     secret: ${JWT_SECRET}
-    c: ${JWT_EXPIRES_MS:3600000}
+    expiration-ms: ${JWT_EXPIRES_MS:3600000}
 
 app:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  s3:
+    endpoint: ${S3_ENDPOINT}
+    region: ${S3_REGION}
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucket: ${S3_BUCKET}
+    publicBaseUrl: ${S3_PUBLIC_BASE}
   jwt:
     secret: ${security.jwt.secret:${JWT_SECRET}}
     expires-ms: ${security.jwt.expiration-ms:${JWT_EXPIRES_MS:3600000}}
-  s3:
-    endpoint: ${S3_ENDPOINT:https://s3.amazonaws.com}
-    region: ${S3_REGION:ap-southeast-1}
-    access-key: ${S3_ACCESS_KEY:}
-    secret-key: ${S3_SECRET_KEY:}
-    bucket: ${S3_BUCKET:siti-bucket}
-    public-base-url: ${S3_PUBLIC_BASE:https://your-cdn-or-bucket-domain}
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,mappings
   endpoint:
     health:
       show-details: always
+

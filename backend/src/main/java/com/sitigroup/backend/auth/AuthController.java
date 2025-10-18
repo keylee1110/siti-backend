@@ -2,6 +2,8 @@ package com.sitigroup.backend.auth;
 
 import com.sitigroup.backend.admin.AdminUser;
 import com.sitigroup.backend.admin.AdminUserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth", description = "Authentication endpoints")
 public class AuthController {
     private final AdminUserRepository repo;
     private final JwtService jwt;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @PostMapping("/login")
+    @Operation(summary = "Admin login", description = "Login and receive JWT token in httpOnly cookie")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse res) {
         String email = body.get("email");
         String password = body.get("password");
@@ -44,6 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
+    @Operation(summary = "Admin logout", description = "Clear authentication cookies")
     public ResponseEntity<?> logout(HttpServletResponse res) {
         res.addHeader("Set-Cookie", "siti_token=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0");
         res.addHeader("Set-Cookie", "siti_csrf=; Path=/; Secure; SameSite=None; Max-Age=0");
@@ -51,6 +56,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Get current user", description = "Get information about currently logged in admin")
     public ResponseEntity<?> me() {
         return ResponseEntity.ok(Map.of("message","ok"));
     }
