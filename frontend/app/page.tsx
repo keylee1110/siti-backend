@@ -57,8 +57,8 @@ export default async function Home() {
         <HeroSection
           clubName={club?.officialName || "SiTiGroup"}
           backgroundImage={club?.featuredImages?.[0]}
-          subtitle={club?.description || "cùng Cộng đồng Sinh viên Tình nguyện SiTiGroup"}
-          quote={club?.tagline || "Keep Loving by Sharing"}
+          subtitle={club?.mission || "cùng Cộng đồng Sinh viên Tình nguyện SiTiGroup"}
+          quote={"Keep Loving by Sharing"}
         />
 
         <StatsSection />
