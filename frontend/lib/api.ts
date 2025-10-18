@@ -1,3 +1,6 @@
+import type { AuthState, ApiResponse } from "@/lib/api"
+import type { Event, PaginatedResponse } from "@/lib/types"
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ""
 
 export interface ApiResponse<T> {
@@ -42,7 +45,7 @@ export async function apiCall<T>(
     headers["X-CSRF-Token"] = authState.csrfToken
   }
 
-    const isServer = typeof window === "undefined"
+  const isServer = typeof window === "undefined"
   const finalUrl = isServer
     ? `http://localhost:8080${endpoint}`
     : `${API_BASE_URL.replace(/\/$/, '')}${endpoint}`
@@ -120,7 +123,7 @@ export async function getClubInfo() {
 }
 
 export async function getPublishedEvents(page = 0, size = 10) {
-  return apiCall(`/api/events?status=PUBLISHED&page=${page}&size=${size}`)
+  return apiCall<PaginatedResponse<Event>>(`/api/events?status=PUBLISHED&page=${page}&size=${size}`)
 }
 
 export async function getEventById(id: string) {
