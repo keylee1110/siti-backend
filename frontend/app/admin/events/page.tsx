@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
 import { getAllEvents, deleteEvent } from "@/lib/api"
@@ -21,15 +21,7 @@ export default function EventsManagementPage() {
   const [selectedEvent, setSelectedEvent] = useState<Event | undefined>()
   const [statusFilter, setStatusFilter] = useState<string>("")
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login")
-    } else {
-      loadEvents(0)
-    }
-  }, [isAuthenticated, router])
-
-  async function loadEvents(page: number) {
+  const loadEvents = useCallback(async (page: number) => {
     setIsLoading(true)
     try {
       const response = await getAllEvents(page, 10, statusFilter || undefined)
@@ -43,7 +35,15 @@ export default function EventsManagementPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [statusFilter])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login")
+    } else {
+      loadEvents(0)
+    }
+  }, [isAuthenticated, router, loadEvents])
 
   async function handleDelete(id: string) {
     if (!confirm("Bạn có chắc chắn muốn xóa sự kiện này?")) return

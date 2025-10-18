@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Image from "next/image"
 
 interface TabItem {
   id: string
@@ -38,11 +39,12 @@ export function TabsSection({ tabs }: TabsSectionProps) {
                   <p className="text-lg text-muted-foreground leading-relaxed">{tab.description}</p>
                 </div>
                 {tab.image && (
-                  <div className="flex justify-center">
-                    <img
+                  <div className="relative flex justify-center w-full max-w-md h-96">
+                    <Image
                       src={tab.image || "/placeholder.svg"}
                       alt={tab.title}
-                      className="w-full max-w-md h-96 rounded-lg shadow-lg object-cover"
+                      fill
+                      className="rounded-lg shadow-lg object-cover"
                     />
                   </div>
                 )}

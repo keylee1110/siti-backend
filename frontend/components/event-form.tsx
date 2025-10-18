@@ -7,6 +7,7 @@ import type { Event } from "@/lib/types"
 import { createEvent, updateEvent, getPresignedUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import Image from "next/image"
 
 interface EventFormProps {
   event?: Event
@@ -71,7 +72,7 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
           gallery: [...(formData.gallery || []), publicUrl],
         })
       }
-    } catch (err) {
+    } catch {
       setError("Upload failed")
     } finally {
       setUploadingImage(false)
@@ -99,7 +100,7 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
           onSuccess()
         }
       }
-    } catch (err) {
+    } catch {
       setError("Failed to save event")
     } finally {
       setIsLoading(false)
@@ -207,11 +208,12 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
             {uploadingImage && <span className="text-sm text-muted-foreground">Đang tải...</span>}
           </div>
           {formData.coverImage && (
-            <div className="mt-4">
-              <img
+            <div className="relative mt-4 w-full h-48 overflow-hidden rounded-lg">
+              <Image
                 src={formData.coverImage || "/placeholder.svg"}
                 alt="Cover"
-                className="w-full h-48 object-cover rounded-lg"
+                fill
+                className="object-cover"
               />
             </div>
           )}
@@ -230,10 +232,11 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
             <div className="mt-4 grid grid-cols-3 gap-4">
               {formData.gallery.map((image, idx) => (
                 <div key={idx} className="relative">
-                  <img
+                  <Image
                     src={image || "/placeholder.svg"}
                     alt={`Gallery ${idx}`}
-                    className="w-full h-24 object-cover rounded-lg"
+                    fill
+                    className="object-cover rounded-lg"
                   />
                   <button
                     type="button"

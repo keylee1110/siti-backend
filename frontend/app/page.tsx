@@ -55,7 +55,6 @@ export default async function Home() {
       <Header />
       <main className="min-h-screen">
         <HeroSection
-          clubName={club?.officialName || "SiTiGroup"}
           backgroundImage={club?.featuredImages?.[0]}
           subtitle={club?.mission || "cùng Cộng đồng Sinh viên Tình nguyện SiTiGroup"}
           quote={"Keep Loving by Sharing"}

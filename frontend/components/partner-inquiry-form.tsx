@@ -31,7 +31,7 @@ export function PartnerInquiryForm() {
         setFormData({ orgName: "", contactEmail: "", message: "" })
         setTimeout(() => setSuccess(false), 5000)
       }
-    } catch (err) {
+    } catch {
       setError("Gửi yêu cầu thất bại. Vui lòng thử lại.")
     } finally {
       setIsLoading(false)

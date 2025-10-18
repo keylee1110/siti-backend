@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export function Footer() {
   return (
     <footer className="border-t border-border bg-muted/50">
@@ -11,19 +13,19 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Liên kết</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
                   Trang chủ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/events" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/events" className="text-muted-foreground hover:text-foreground transition-colors">
                   Sự kiện
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
                   Liên hệ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

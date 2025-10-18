@@ -7,6 +7,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 import { useParams } from "next/navigation"
 
 export default function EventDetailPage() {
@@ -25,7 +26,7 @@ export default function EventDetailPage() {
         } else {
           setEvent(response.data as Event)
         }
-      } catch (err) {
+      } catch {
         setError("Failed to load event")
       } finally {
         setIsLoading(false)
@@ -53,11 +54,12 @@ export default function EventDetailPage() {
         ) : event ? (
           <>
             {event.coverImage && (
-              <div className="w-full h-96 overflow-hidden">
-                <img
+              <div className="relative w-full h-96 overflow-hidden">
+                <Image
                   src={event.coverImage || "/placeholder.svg"}
                   alt={event.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
             )}
@@ -112,12 +114,14 @@ export default function EventDetailPage() {
                     <h2 className="text-2xl font-bold mb-6">Thư viện ảnh</h2>
                     <div className="grid md:grid-cols-2 gap-4">
                       {event.gallery.map((image, idx) => (
-                        <img
-                          key={idx}
-                          src={image || "/placeholder.svg"}
-                          alt={`Gallery ${idx + 1}`}
-                          className="w-full h-64 object-cover rounded-lg"
-                        />
+                        <div key={idx} className="relative w-full h-64 overflow-hidden rounded-lg">
+                          <Image
+                            src={image || "/placeholder.svg"}
+                            alt={`Gallery ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       ))}
                     </div>
                   </div>

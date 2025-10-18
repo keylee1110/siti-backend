@@ -1,14 +1,12 @@
 "use client"
 
 interface HeroSectionProps {
-  clubName: string
   backgroundImage?: string
   subtitle?: string
   quote?: string
 }
 
 export function HeroSection({
-  clubName,
   backgroundImage,
   subtitle = "cùng Cộng đồng Sinh viên Tính nguyện SiTiGroup",
   quote = "Keep Loving By Sharing",

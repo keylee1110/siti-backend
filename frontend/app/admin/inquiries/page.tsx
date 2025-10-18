@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
 import { getPartnerInquiries, updateInquiryStatus } from "@/lib/api"
@@ -20,15 +20,7 @@ export default function InquiriesManagementPage() {
   const [selectedInquiry, setSelectedInquiry] = useState<PartnerInquiry | null>(null)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login")
-    } else {
-      loadInquiries(0)
-    }
-  }, [isAuthenticated, router])
-
-  async function loadInquiries(page: number) {
+  const loadInquiries = useCallback(async (page: number) => {
     setIsLoading(true)
     try {
       const response = await getPartnerInquiries(page, 10, statusFilter || undefined)
@@ -42,7 +34,15 @@ export default function InquiriesManagementPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [statusFilter])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login")
+    } else {
+      loadInquiries(0)
+    }
+  }, [isAuthenticated, router, loadInquiries])
 
   async function handleStatusUpdate(id: string, newStatus: string) {
     setUpdatingId(id)

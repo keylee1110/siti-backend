@@ -6,6 +6,7 @@ import type { Event, PaginatedResponse } from "@/lib/types"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
@@ -62,11 +63,14 @@ export default function EventsPage() {
                     <Link key={event.id} href={`/events/${event.id}`}>
                       <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
                         {event.coverImage && (
-                          <img
-                            src={event.coverImage || "/placeholder.svg"}
-                            alt={event.title}
-                            className="w-full h-48 object-cover"
-                          />
+                          <div className="relative w-full h-48">
+                            <Image
+                              src={event.coverImage || "/placeholder.svg"}
+                              alt={event.title}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         )}
                         <div className="p-6">
                           <h3 className="font-bold text-lg mb-2 line-clamp-2">{event.title}</h3>

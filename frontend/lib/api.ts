@@ -1,4 +1,3 @@
-import type { AuthState, ApiResponse } from "@/lib/api"
 import type {
   Event,
   PaginatedResponse,
@@ -6,7 +5,7 @@ import type {
   PartnerInquiry,
 } from "@/lib/types"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ""
+
 
 export interface ApiResponse<T> {
   data: T | null
@@ -40,14 +39,14 @@ export async function apiCall<T>(
 ): Promise<ApiResponse<T>> {
   const { requiresAuth = false, ...fetchOptions } = options
 
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    ...fetchOptions.headers,
+  const headers = new Headers(fetchOptions.headers)
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json")
   }
 
   // Add CSRF token for admin endpoints
   if (requiresAuth && authState?.csrfToken) {
-    headers["X-CSRF-Token"] = authState.csrfToken
+    headers.set("X-CSRF-Token", authState.csrfToken)
   }
 
   const isServer = typeof window === "undefined"

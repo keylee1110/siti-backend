@@ -18,7 +18,7 @@ export function useAuth() {
     async function checkUser() {
       try {
         await getMe()
-      } catch (e) {
+      } catch {
         // error is handled in getMe, which sets authState to null
       } finally {
         setIsInitialLoading(false)

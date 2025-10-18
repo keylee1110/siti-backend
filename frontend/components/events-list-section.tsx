@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import type { Event } from "@/lib/types"
 import { Calendar, MapPin } from "lucide-react"
 
@@ -21,11 +22,12 @@ export function EventsListSection({ events }: EventsListSectionProps) {
             >
               <div className="grid md:grid-cols-3 gap-6 p-6">
                 {event.coverImage && (
-                  <div className="md:col-span-1">
-                    <img
+                  <div className="relative md:col-span-1 w-full h-48 rounded-lg overflow-hidden">
+                    <Image
                       src={event.coverImage || "/placeholder.svg"}
                       alt={event.title}
-                      className="w-full h-48 object-cover rounded-lg"
+                      fill
+                      className="object-cover"
                     />
                   </div>
                 )}
