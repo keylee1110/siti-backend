@@ -2,12 +2,14 @@
 
 interface HeroSectionProps {
   backgroundImage?: string
+  title?: React.ReactNode
   subtitle?: string
   quote?: string
 }
 
 export function HeroSection({
   backgroundImage,
+  title,
   subtitle = "cùng Cộng đồng Sinh viên Tính nguyện SiTiGroup",
   quote = "Keep Loving By Sharing",
 }: HeroSectionProps) {
@@ -46,17 +48,23 @@ export function HeroSection({
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-4">
-        {/* Part 1: Main Heading */}
         <div className="text-center mb-16 w-full flex flex-col items-center">
-          {/* Small text above */}
-          <p className="text-lg md:text-xl text-white/80 mb-4 font-light tracking-wide">HÀNH TRÌNH</p>
-
-          {/* Large heading with accent color */}
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white text-balance leading-tight mb-6 mx-auto">
-            <span className="text-white">16</span>
-            <span className="text-pink-500 mx-2">NĂM</span>
-            <span className="text-white">LAN TỎA</span>
-          </h1>
+          {/* Replace static title with customizable title prop */}
+          {title ? (
+            <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-white text-balance leading-tight mb-6 mx-auto">
+              {title}
+            </div>
+          ) : (
+            <>
+              <p className="text-2xl md:text-4xl sm:text-3xl text-white/100 mb-4 font-bold tracking-wide">
+                HÀNH TRÌNH
+              </p>
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold text-white text-balance leading-tight mb-6 mx-auto">
+                <span className="text-pink-500 mx-2">16 NĂM</span>
+                <span className="text-white">LAN TỎA</span>
+              </h1>
+            </>
+          )}
 
           {/* Subtitle */}
           <p className="text-base md:text-lg text-white/90 text-balance max-w-2xl mx-auto">{subtitle}</p>

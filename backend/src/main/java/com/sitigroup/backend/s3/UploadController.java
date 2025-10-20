@@ -1,5 +1,6 @@
 package com.sitigroup.backend.s3;
 
+import com.sitigroup.backend.core.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class UploadController {
 
     @PostMapping("/presign")
     @Operation(summary = "Get pre-signed URL", description = "Get pre-signed URL for direct S3 upload")
-    public ResponseEntity<Map<String, Object>> presign(@RequestBody PresignRequest req) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> presign(@RequestBody PresignRequest req) {
         // Tạo key: ví dụ "events/uuid-banner.png"
         String key = presignService.buildObjectKey(
                 (req.getDirectory() == null || req.getDirectory().isBlank()) ? "events" : req.getDirectory(),
@@ -31,7 +32,7 @@ public class UploadController {
                 req.getContentType(),
                 Duration.ofMinutes(req.getExpiresMinutes() != null ? req.getExpiresMinutes() : 10)
         );
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(ApiResponse.ok(result));
     }
 
     @Data

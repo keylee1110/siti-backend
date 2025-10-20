@@ -33,48 +33,78 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
 
+  const [coverPreview, setCoverPreview] = useState<string | null>(null)
+
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>, field: "coverImage" | "gallery") {
+    console.log("handleImageUpload called", { field });
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file) {
+      console.log("No file selected");
+      return
+    }
+    console.log("File selected:", file);
 
     setUploadingImage(true)
+    setError(null)
+
+    // Create a temporary local URL for immediate preview
+    const tempPreviewUrl = URL.createObjectURL(file)
+    if (field === "coverImage") {
+      setCoverPreview(tempPreviewUrl)
+    }
+
     try {
+      console.log("Getting presigned URL...");
       const presignResponse = await getPresignedUrl(file.name, file.type)
-      if (presignResponse.error) {
-        setError("Failed to get upload URL")
+      console.log("Presign response:", presignResponse);
+
+      if (presignResponse.error || !presignResponse.data?.url || !presignResponse.data?.publicUrl) {
+        console.error("Failed to get presigned URL:", presignResponse.error);
+        setError(presignResponse.error?.message || "Failed to get upload URL")
+        if (field === "coverImage") setCoverPreview(null) // Clear preview on error
         return
       }
 
-      const uploadUrl = presignResponse.data?.url
-      const publicUrl = presignResponse.data?.publicUrl
-
-      if (!uploadUrl || !publicUrl) {
-        setError("Invalid upload response")
-        return
-      }
+      const { url: uploadUrl, publicUrl } = presignResponse.data
+      console.log("Uploading to:", uploadUrl);
 
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         body: file,
-        headers: { "Content-Type": file.type },
+        headers: {
+          "Content-Type": file.type,
+        },
       })
+      console.log("Upload response:", uploadResponse);
 
       if (!uploadResponse.ok) {
-        setError("Failed to upload image")
+        const errorText = await uploadResponse.text()
+        console.error("Image upload failed:", errorText)
+        setError(`Failed to upload image: ${uploadResponse.statusText}.`)
+        if (field === "coverImage") setCoverPreview(null) // Clear preview on error
         return
       }
 
+      console.log("Upload successful, public URL:", publicUrl);
+
+      // Clean up the temporary URL
+      URL.revokeObjectURL(tempPreviewUrl)
+
       if (field === "coverImage") {
         setFormData({ ...formData, coverImage: publicUrl })
+        setCoverPreview(null) // Clear preview state
       } else {
         setFormData({
           ...formData,
           gallery: [...(formData.gallery || []), publicUrl],
         })
       }
-    } catch {
-      setError("Upload failed")
+    } catch (err: any) {
+      console.error("An error occurred during upload:", err);
+      setError(err.message || "An unexpected error occurred during upload.")
+      if (field === "coverImage") setCoverPreview(null) // Clear preview on error
     } finally {
+      console.log("Finished handleImageUpload");
       setUploadingImage(false)
     }
   }
@@ -207,10 +237,10 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
             />
             {uploadingImage && <span className="text-sm text-muted-foreground">Đang tải...</span>}
           </div>
-          {formData.coverImage && (
+          {(coverPreview || formData.coverImage) && (
             <div className="relative mt-4 w-full h-48 overflow-hidden rounded-lg">
               <Image
-                src={formData.coverImage || "/placeholder.svg"}
+                src={coverPreview || formData.coverImage || "/placeholder.svg"}
                 alt="Cover"
                 fill
                 className="object-cover"
