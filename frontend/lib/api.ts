@@ -49,9 +49,10 @@ export async function apiCall<T>(
     headers.set("X-CSRF-Token", authState.csrfToken)
   }
 
-  // The base URL is an empty string because we are using Next.js rewrites
-  // to proxy requests from /api/* to the backend.
-  const baseUrl = ""
+  const isServer = typeof window === "undefined"
+  // On the server (build time/SSR), we must use the absolute backend URL.
+  // On the client, we use a relative path to leverage the Next.js proxy.
+  const baseUrl = isServer ? process.env.BACKEND_API_HOST || "" : ""
 
   const finalUrl = `${baseUrl}${endpoint}`
 
