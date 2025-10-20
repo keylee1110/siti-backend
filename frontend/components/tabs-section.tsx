@@ -47,7 +47,7 @@ export function TabsSection({ tabs }: TabsSectionProps) {
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
+          <TabsList className="flex w-full overflow-x-auto justify-center mb-8">
             {tabs.map((tab) => (
               <TabsTrigger key={tab.id} value={tab.id}>
                 {tab.label}
@@ -55,7 +55,7 @@ export function TabsSection({ tabs }: TabsSectionProps) {
             ))}
           </TabsList>
 
-          <div className="relative mt-8 min-h-[450px]">
+          <div className="mt-8">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={activeTab}
@@ -65,7 +65,7 @@ export function TabsSection({ tabs }: TabsSectionProps) {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="absolute w-full"
+                className="w-full"
               >
                 {tabs.map((tab) => (
                   tab.id === activeTab && (

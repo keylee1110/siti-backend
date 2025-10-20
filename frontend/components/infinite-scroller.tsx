@@ -72,13 +72,13 @@ export function InfiniteScroller({ images, direction = "left", speed = "normal" 
       >
         {duplicatedImages.map((src, index) => (
           <div key={index} className="relative flex-shrink-0 w-64 h-40">
-            <Image
-              src={src}
-              alt={`scrolling image ${index}`}
-              fill
-              className="object-cover rounded-lg"
-            />
-          </div>
+                          <Image
+                            src={src}
+                            alt={`scrolling image ${index}`}
+                            fill
+                            className="object-cover rounded-lg"
+                            sizes="256px"
+                          />          </div>
         ))}
       </motion.div>
     </div>

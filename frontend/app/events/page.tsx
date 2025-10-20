@@ -21,8 +21,8 @@ export default function EventsPage() {
     setIsLoading(true)
     try {
       const response = searchQuery
-        ? await searchEvents(searchQuery, page, 10)
-        : await getPublishedEvents(page, 10)
+        ? await searchEvents(searchQuery, page, 9)
+        : await getPublishedEvents(page, 9)
 
       if (response.data) {
         const data = response.data as PaginatedResponse<Event>

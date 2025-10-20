@@ -2,16 +2,18 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import type { Event } from "@/lib/types"
 import { createEvent, updateEvent, getPresignedUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
-import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from "react-image-crop"
-import "react-image-crop/dist/ReactCrop.css"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 
+
+
+import dynamic from 'next/dynamic'
+
+const ImageCropDialog = dynamic(() => import('@/components/image-crop-dialog').then(mod => mod.ImageCropDialog))
 
 interface EventFormProps {
   event?: Event
@@ -46,79 +48,7 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
   const [coverPreview, setCoverPreview] = useState<string | null>(null)
   const [posterPreview, setPosterPreview] = useState<string | null>(null)
   const [galleryFiles, setGalleryFiles] = useState<GalleryFile[]>([])
-  const [crop, setCrop] = useState<Crop>()
-  const [completedCrop, setCompletedCrop] = useState<Crop>()
   const [isCropModalOpen, setIsCropModalOpen] = useState(false)
-  const imgRef = useRef<HTMLImageElement>(null)
-  const [originalFile, setOriginalFile] = useState<File | null>(null)
-
-
-  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    const { width, height } = e.currentTarget
-    const newCrop = centerCrop(
-      makeAspectCrop(
-        {
-          unit: "%",
-          width: 90,
-        },
-        16 / 9,
-        width,
-        height,
-      ),
-      width,
-      height,
-    )
-    setCrop(newCrop)
-  }
-
-  async function handleCropImage() {
-    if (!completedCrop || !imgRef.current || !originalFile) {
-      return
-    }
-
-    const croppedImage = await getCroppedImg(imgRef.current, completedCrop, originalFile.name)
-    if (croppedImage) {
-      setIsCropModalOpen(false)
-      uploadFile(croppedImage, "coverImage")
-    }
-  }
-
-  async function getCroppedImg(image: HTMLImageElement, crop: Crop, fileName: string): Promise<File | null> {
-    const canvas = document.createElement("canvas")
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
-    canvas.width = crop.width * scaleX
-    canvas.height = crop.height * scaleY
-    const ctx = canvas.getContext("2d")
-
-    if (!ctx) {
-      return null
-    }
-
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width * scaleX,
-      crop.height * scaleY,
-    )
-
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          resolve(null)
-          return
-        }
-        const newFile = new File([blob], fileName, { type: "image/jpeg" })
-        resolve(newFile)
-      }, "image/jpeg")
-    })
-  }
-
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>, field: "coverImage" | "posterImage" | "gallery") {
     const files = e.target.files
@@ -128,7 +58,6 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
 
     if (field === "coverImage") {
       const file = files[0]
-      setOriginalFile(file)
       setCoverPreview(URL.createObjectURL(file))
       setIsCropModalOpen(true)
     } else if (field === "posterImage") {
@@ -149,6 +78,11 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
         uploadFile(file.file, "gallery", file.controller.signal, file.preview)
       })
     }
+  }
+
+  function handleCropComplete(croppedImage: File) {
+    setIsCropModalOpen(false)
+    uploadFile(croppedImage, "coverImage")
   }
 
   async function uploadFile(file: File, field: "coverImage" | "posterImage" | "gallery", signal?: AbortSignal, previewUrl?: string) {
@@ -382,39 +316,6 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
           )}
         </div>
 
-        <Dialog open={isCropModalOpen} onOpenChange={setIsCropModalOpen}>
-          <DialogContent className="max-w-3xl">
-            <DialogHeader>
-              <DialogTitle>Chỉnh sửa ảnh bìa</DialogTitle>
-            </DialogHeader>
-            {coverPreview && (
-              <ReactCrop
-                crop={crop}
-                onChange={(_, percentCrop) => setCrop(percentCrop)}
-                onComplete={(c) => setCompletedCrop(c)}
-                aspect={16 / 9}
-              >
-                <Image
-                  ref={imgRef}
-                  src={coverPreview}
-                  alt="Crop preview"
-                  width={800}
-                  height={450}
-                  onLoad={onImageLoad}
-                />
-              </ReactCrop>
-            )}
-            <DialogFooter>
-              <Button onClick={handleCropImage} disabled={!completedCrop}>
-                Cắt và lưu ảnh
-              </Button>
-              <Button variant="outline" onClick={() => setIsCropModalOpen(false)}>
-                Hủy
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
 
         <div>
           <label className="block text-sm font-medium mb-2">Thư viện ảnh</label>
@@ -478,6 +379,15 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
           </Button>
         </div>
       </form>
+
+      {isCropModalOpen && (
+        <ImageCropDialog
+          isOpen={isCropModalOpen}
+          onClose={() => setIsCropModalOpen(false)}
+          coverPreview={coverPreview}
+          onCropComplete={handleCropComplete}
+        />
+      )}
     </Card>
   )
 }

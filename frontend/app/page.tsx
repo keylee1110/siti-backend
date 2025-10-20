@@ -1,12 +1,14 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 import { getClubInfo, getPublishedEvents } from "@/lib/api"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { HeroSection } from "@/components/hero-section"
-import { StatsSection } from "@/components/stats-section"
-import { TabsSection } from "@/components/tabs-section"
-import { EventsListSection } from "@/components/events-list-section"
-import { InfiniteScroller } from "@/components/infinite-scroller"
+import dynamic from 'next/dynamic'
+
+const StatsSection = dynamic(() => import('@/components/stats-section').then(mod => mod.StatsSection))
+const TabsSection = dynamic(() => import('@/components/tabs-section').then(mod => mod.TabsSection))
+const EventsListSection = dynamic(() => import('@/components/events-list-section').then(mod => mod.EventsListSection))
+const InfiniteScroller = dynamic(() => import('@/components/infinite-scroller').then(mod => mod.InfiniteScroller))
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 

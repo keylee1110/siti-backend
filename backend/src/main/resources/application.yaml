@@ -2,6 +2,8 @@ server:
   port: ${PORT:8080}
 
 spring:
+  main:
+    lazy-initialization: true
   data:
     mongodb:
       uri: ${MONGO_URI}
