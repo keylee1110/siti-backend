@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getClubInfo, getPublishedEvents } from "@/lib/api"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
