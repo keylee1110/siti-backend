@@ -8,7 +8,7 @@ import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
+
 
 interface ImageCropDialogProps {
   isOpen: boolean
@@ -114,15 +114,12 @@ export function ImageCropDialog({ isOpen, onClose, coverPreview, onCropComplete 
             onComplete={(c) => setCompletedCrop(c)}
             aspect={16 / 9}
           >
-            <Image
-              ref={imgRef}
-              src={coverPreview}
-              alt="Crop preview"
-              width={800}
-              height={450}
-              onLoad={onImageLoad}
-            />
-          </ReactCrop>
+                            <img
+                              ref={imgRef}
+                              src={coverPreview}
+                              alt="Crop preview"
+                              onLoad={onImageLoad}
+                            />          </ReactCrop>
         )}
         <DialogFooter>
           <Button onClick={handleCropImage} disabled={!completedCrop}>
