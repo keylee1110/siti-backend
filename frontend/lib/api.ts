@@ -49,11 +49,9 @@ export async function apiCall<T>(
     headers.set("X-CSRF-Token", authState.csrfToken)
   }
 
-  const isServer = typeof window === "undefined"
-  // On the server, use the internal API URL. On the client, use the public one.
-  const baseUrl = isServer
-    ? process.env.INTERNAL_API_URL
-    : process.env.NEXT_PUBLIC_API_URL || ""
+  // The base URL is an empty string because we are using Next.js rewrites
+  // to proxy requests from /api/* to the backend.
+  const baseUrl = ""
 
   const finalUrl = `${baseUrl}${endpoint}`
 
