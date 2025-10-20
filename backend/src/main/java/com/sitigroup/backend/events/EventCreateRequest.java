@@ -27,6 +27,8 @@ public class EventCreateRequest {
 
     private String coverImage;
 
+    private String posterImage;
+
     private List<String> gallery;
 
     private Event.Status status;

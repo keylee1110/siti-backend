@@ -17,41 +17,29 @@ export default function ContactPage() {
         </section>
 
         <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-2xl">
+          <div className="container mx-auto px-4 max-w-4xl">
             <div className="grid md:grid-cols-2 gap-12 mb-12">
               <div>
                 <h2 className="text-2xl font-bold mb-6">Thông tin liên hệ</h2>
                 <div className="space-y-6">
                   <div>
                     <h3 className="font-semibold mb-2">Email</h3>
-                    <a href="mailto:info@siti.club" className="text-primary hover:underline">
-                      info@siti.club
+                    <a href="mailto:sitigroup.fptuhcm@gmail.com" className="text-primary hover:underline">
+                      sitigroup.fptuhcm@gmail.com
                     </a>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Điện thoại</h3>
-                    <a href="tel:+84123456789" className="text-primary hover:underline">
-                      +84 (0) 123 456 789
+                    <a href="tel:+84915883688" className="text-primary hover:underline">
+                      +84 (0) 915 883 688
                     </a>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Địa chỉ</h3>
-                    <p className="text-muted-foreground">
-                      123 Đường ABC
-                      <br />
-                      Quận 1, TP. Hồ Chí Minh
-                      <br />
-                      Việt Nam
-                    </p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Giờ làm việc</h3>
                     <p className="text-muted-foreground">
                       Thứ Hai - Thứ Sáu: 9:00 - 18:00
                       <br />
-                      Thứ Bảy: 10:00 - 16:00
-                      <br />
-                      Chủ Nhật: Đóng cửa
+                      Thứ Bảy và Chủ Nhật: 10:00 - 16:00
                     </p>
                   </div>
                 </div>

@@ -20,7 +20,6 @@ public class Event {
     @Id
     private String id;
 
-    @TextIndexed(weight = 2)
     private String title;
 
     private String summary;
@@ -33,6 +32,7 @@ public class Event {
     private Instant endAt;
 
     private String coverImage;       // S3 public URL
+    private String posterImage;      // S3 public URL
     private List<String> gallery;    // S3 public URLs
 
     private Location location;

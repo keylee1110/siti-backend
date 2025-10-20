@@ -125,3 +125,7 @@
     @apply bg-background text-foreground font-montserrat;
   }
 }
+
+.text-pink-500 {
+  color: #ec4899;
+}

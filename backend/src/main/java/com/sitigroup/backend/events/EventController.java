@@ -37,6 +37,25 @@ public class EventController {
         return ApiResponse.ok(payload);
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "Search for events", description = "Search for events by title, summary, and description")
+    public ApiResponse<Map<String, Object>> search(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "startAt"));
+        var result = repo.searchByText(query, pageable);
+        Map<String, Object> payload = Map.of(
+                "content", result.getContent(),
+                "page", result.getNumber(),
+                "size", result.getSize(),
+                "totalElements", result.getTotalElements(),
+                "totalPages", result.getTotalPages()
+        );
+        return ApiResponse.ok(payload);
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Get event details", description = "Get detailed information about a specific event")
     public ApiResponse<Event> get(@PathVariable String id) {

@@ -65,6 +65,7 @@ public class AdminEventController {
         event.setEndAt(request.getEndAt());
         event.setLocation(request.getLocation());
         event.setCoverImage(request.getCoverImage());
+        event.setPosterImage(request.getPosterImage());
         event.setGallery(request.getGallery());
         event.setStatus(request.getStatus() != null ? request.getStatus() : Event.Status.DRAFT);
 
@@ -88,6 +89,7 @@ public class AdminEventController {
         if (request.getEndAt() != null) event.setEndAt(request.getEndAt());
         if (request.getLocation() != null) event.setLocation(request.getLocation());
         if (request.getCoverImage() != null) event.setCoverImage(request.getCoverImage());
+        if (request.getPosterImage() != null) event.setPosterImage(request.getPosterImage());
         if (request.getGallery() != null) event.setGallery(request.getGallery());
         if (request.getStatus() != null) event.setStatus(request.getStatus());
 

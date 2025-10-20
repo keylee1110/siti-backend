@@ -59,7 +59,14 @@ export default function EventDetailPage() {
                   src={event.coverImage || "/placeholder.svg"}
                   alt={event.title}
                   fill
-                  className="object-cover"
+                  className="object-cover filter blur-lg scale-110"
+                />
+                <div className="absolute inset-0 bg-black/30"></div>
+                <Image
+                  src={event.coverImage || "/placeholder.svg"}
+                  alt={event.title}
+                  fill
+                  className="object-contain z-10"
                 />
               </div>
             )}
@@ -76,13 +83,11 @@ export default function EventDetailPage() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Ngày bắt đầu</p>
                     <p className="font-semibold">{new Date(event.startAt).toLocaleDateString("vi-VN")}</p>
-                    <p className="text-sm">{new Date(event.startAt).toLocaleTimeString("vi-VN")}</p>
                   </div>
                   {event.endAt && (
                     <div>
                       <p className="text-sm text-muted-foreground mb-2">Ngày kết thúc</p>
                       <p className="font-semibold">{new Date(event.endAt).toLocaleDateString("vi-VN")}</p>
-                      <p className="text-sm">{new Date(event.endAt).toLocaleTimeString("vi-VN")}</p>
                     </div>
                   )}
                   {event.location?.name && (

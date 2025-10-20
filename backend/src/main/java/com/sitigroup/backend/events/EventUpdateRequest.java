@@ -25,6 +25,8 @@ public class EventUpdateRequest {
 
     private String coverImage;
 
+    private String posterImage;
+
     private List<String> gallery;
 
     private Event.Status status;

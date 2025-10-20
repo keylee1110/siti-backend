@@ -33,13 +33,13 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Theo dõi</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a
+                  href="https://www.facebook.com/sitigroupfuhcm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Facebook
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Instagram
                 </a>
               </li>
             </ul>
@@ -47,7 +47,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Liên hệ</h4>
             <p className="text-sm text-muted-foreground">Email: sitigroup.fptuhcm@gmail.com</p>
-            <p className="text-sm text-muted-foreground">Phone: +84 (0) 123 456 789</p>
+            <p className="text-sm text-muted-foreground">Phone: +84 (0) 915 883 688</p>
           </div>
         </div>
         <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">

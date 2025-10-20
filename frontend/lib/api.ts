@@ -137,6 +137,10 @@ export async function getEventById(id: string) {
   return apiCall<Event>(`/api/events/${id}`)
 }
 
+export async function searchEvents(query: string, page = 0, size = 10) {
+  return apiCall<PaginatedResponse<Event>>(`/api/events/search?query=${query}&page=${page}&size=${size}`)
+}
+
 export async function submitPartnerInquiry(data: {
   orgName: string
   contactEmail: string

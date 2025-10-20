@@ -3,13 +3,14 @@
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
-import { getAllEvents, deleteEvent } from "@/lib/api"
+import { getAllEvents, deleteEvent, updateEvent } from "@/lib/api"
 import type { Event, PaginatedResponse } from "@/lib/types"
 import { AdminHeader } from "@/components/admin-header"
 import { AdminSidebar } from "@/components/admin-sidebar"
 import { EventForm } from "@/components/event-form"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function EventsManagementPage() {
   const { isAuthenticated } = useAuth()
@@ -44,6 +45,17 @@ export default function EventsManagementPage() {
       loadEvents(0)
     }
   }, [isAuthenticated, router, loadEvents])
+
+  async function handleStatusChange(eventId: string, status: string) {
+    try {
+      const response = await updateEvent(eventId, { status })
+      if (!response.error) {
+        loadEvents(pagination.page)
+      }
+    } catch (error) {
+      console.error("Failed to update event status:", error)
+    }
+  }
 
   async function handleDelete(id: string) {
     if (!confirm("Bạn có chắc chắn muốn xóa sự kiện này?")) return
@@ -136,17 +148,19 @@ export default function EventsManagementPage() {
                                 </span>
                                 <span>
                                   <strong>Trạng thái:</strong>{" "}
-                                  <span
-                                    className={`px-2 py-1 rounded text-xs font-medium ${
-                                      event.status === "PUBLISHED"
-                                        ? "bg-green-100 text-green-800"
-                                        : event.status === "DRAFT"
-                                          ? "bg-yellow-100 text-yellow-800"
-                                          : "bg-gray-100 text-gray-800"
-                                    }`}
+                                  <Select
+                                    value={event.status}
+                                    onValueChange={(newStatus) => handleStatusChange(event.id, newStatus)}
                                   >
-                                    {event.status}
-                                  </span>
+                                    <SelectTrigger className="w-[180px]">
+                                      <SelectValue placeholder="Chọn trạng thái" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="DRAFT">Nháp</SelectItem>
+                                      <SelectItem value="PUBLISHED">Công bố</SelectItem>
+                                      <SelectItem value="ARCHIVED">Lưu trữ</SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 </span>
                               </div>
                             </div>

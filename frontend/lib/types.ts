@@ -7,6 +7,7 @@ export interface Event {
   startAt: string
   endAt?: string
   coverImage?: string
+  posterImage?: string
   gallery?: string[]
   location?: {
     name?: string

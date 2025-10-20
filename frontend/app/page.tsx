@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/hero-section"
 import { StatsSection } from "@/components/stats-section"
 import { TabsSection } from "@/components/tabs-section"
 import { EventsListSection } from "@/components/events-list-section"
+import { InfiniteScroller } from "@/components/infinite-scroller"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
@@ -18,35 +19,35 @@ export default async function Home() {
   const tabsData = [
     {
       id: "about",
-      label: "Về chúng tôi",
-      title: "Giới thiệu SiTiGroup",
+      label: "Hòa nhập",
+      title: "",
       description:
-        "SiTiGroup là một tổ chức phi lợi nhuận tập trung vào việc hỗ trợ các hoàn cảnh khó khăn và tạo tác động tích cực cho cộng đồng. Chúng tôi tin rằng mỗi hành động nhỏ có thể tạo nên sự thay đổi lớn.",
-      image: "/about-club.jpg",
+        `SiTi là tập hợp những sinh viên hòa đồng, thân hiện, nhiệt huyết và luôn sẵn sàng đón nhận tất cả những <span class="text-pink-500">"tân binh"</span> sẽ đồng hành trong hành trình tạo ra những giá trị tích cực cho cộng đồng.`,
+      image: "/hoanhap.png",
     },
     {
       id: "mission",
-      label: "Sứ mệnh",
+      label: "Trải nghiệm",
       title: "Sứ mệnh của chúng tôi",
       description:
-        "Chúng tôi cam kết kết nối những người có tâm huyết, phát triển các chương trình hỗ trợ bền vững, và tạo ra những cơ hội để mọi người có thể đóng góp cho cộng đồng.",
-      image: "/mission-control.png",
+        `Những hoạt động do SiTi định hướng tổ chức <span class="text-pink-500"> luôn dựa vào mục đích cộng đồng </span> với mục tiêu chung là mang lại những điều tích cực cho thành viên và xã hội.`,
+      image: "/trainghiem.png",
     },
     {
       id: "impact",
-      label: "Tác động",
+      label: "Thực tế",
       title: "Tác động của chúng tôi",
       description:
-        "Qua các năm hoạt động, chúng tôi đã hỗ trợ hàng chục nghìn hoàn cảnh khó khăn, gây dựng quỹ từ thiện lớn, và xây dựng một cộng đồng mạnh mẽ.",
-      image: "/impact.png",
+        `Thành viên SiTi <span class="text-pink-500">"luôn đồng hành</span>, chia sẻ kiến thức, kinh nghiệm, và trải nghiệm. Mọi người <span class="text-pink-500">thẳng thắn</span> góp ý để cùng phát triển và đạt mục tiêu chung.`,
+      image: "/thucte.png",
     },
     {
       id: "community",
-      label: "Cộng đồng",
+      label: "Lan tỏa",
       title: "Cộng đồng SiTiGroup",
       description:
-        "Cộng đồng của chúng tôi bao gồm những tình nguyện viên, nhà tài trợ, và những người tin tưởng vào sức mạnh của sự kết nối và chia sẻ.",
-      image: "/diverse-community-gathering.png",
+        `SiTiGroup là một <span class="text-pink-500">""Cộng đồng"</span> không phải một "Tổ chức", các thành viên luôn có cơ hội <span class="text-pink-500">chia sẻ</span> những điều tốt đẹp cho nhau và cùng nhau lan tỏa những điều tích cực đó đến với nhiều người hơn.`,
+      image: "/lantoa.png",
     },
   ]
 
@@ -64,7 +65,42 @@ export default async function Home() {
 
         <TabsSection tabs={tabsData} />
 
+        <section className="py-16 md:py-24">
+          <InfiniteScroller
+            images={[
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/536272863_1080626620911119_7447905397251531054_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/558192066_1112844611022653_592381328922229657_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/H%C3%A0nh%20tr%C3%ACnh%20hy%20v%E1%BB%8Dng%202025%20(1).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/XYT%202024%20(2).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/XYT%202024%20(8).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/545798057_1086756573631457_3090809739295962483_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/L%E1%BB%9Bp%20h%E1%BB%8Dc%20t%C3%ACnh%20th%C6%B0%C6%A1ng%202024%20Spring%20(12).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/540675378_1080626054244509_835715219157676819_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/H%C3%A0nh%20tr%C3%ACnh%20hy%20v%E1%BB%8Dng%202025%20(3).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/558159489_1112844741022640_1976493473862023020_n.jpg",
+            ]}
+            direction="right"
+          />
+        </section>
+
         <EventsListSection events={events} />
+
+        <section className="py-16 md:py-24">
+          <InfiniteScroller
+            images={[
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/536272863_1080626620911119_7447905397251531054_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/561595267_1112859784354469_4721643356762422356_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/H%C3%A0nh%20tr%C3%ACnh%20hy%20v%E1%BB%8Dng%202025%20(2).jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/545636935_1086757110298070_8396252798641870370_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/L%E1%BB%9Bp%20h%E1%BB%8Dc%20t%C3%ACnh%20th%C6%B0%C6%A1ng%202024%20Spring.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/556879944_1103540711953043_4826156978774986188_n.jpg",
+              "/diverse-community-gathering.png",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/557933109_1112845174355930_8189570871197412941_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/558470398_1112844284356019_1106005238634030267_n.jpg",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/542109585_1080626000911181_3151581864008339212_n.jpg",
+            ]}
+          />
+        </section>
 
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-primary text-primary-foreground">

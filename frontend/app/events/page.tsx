@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { getPublishedEvents } from "@/lib/api"
+import { useState, useEffect, useCallback } from "react"
+import { getPublishedEvents, searchEvents } from "@/lib/api"
 import type { Event, PaginatedResponse } from "@/lib/types"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -9,20 +9,21 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [pagination, setPagination] = useState({ page: 0, totalPages: 1 })
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
 
-  useEffect(() => {
-    loadEvents(0)
-  }, [])
-
-  async function loadEvents(page: number) {
+  const loadEvents = useCallback(async (page: number) => {
     setIsLoading(true)
     try {
-      const response = await getPublishedEvents(page, 10)
+      const response = searchQuery
+        ? await searchEvents(searchQuery, page, 10)
+        : await getPublishedEvents(page, 10)
+
       if (response.data) {
         const data = response.data as PaginatedResponse<Event>
         setEvents(data.content)
@@ -33,7 +34,17 @@ export default function EventsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [searchQuery])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      loadEvents(0)
+    }, 500) // Debounce search
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [searchQuery, loadEvents])
 
   return (
     <>
@@ -42,7 +53,14 @@ export default function EventsPage() {
         <section className="py-12 md:py-20 bg-gradient-to-br from-primary/10 to-accent/10">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Sự kiện</h1>
-            <p className="text-lg text-muted-foreground">Khám phá các sự kiện sắp tới của SiTi Club</p>
+            <p className="text-lg text-muted-foreground mb-6">Khám phá các sự kiện sắp tới của SiTi Club</p>
+            <Input
+              type="text"
+              placeholder="Tìm kiếm sự kiện..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="max-w-sm"
+            />
           </div>
         </section>
 
@@ -62,13 +80,13 @@ export default function EventsPage() {
                   {events.map((event) => (
                     <Link key={event.id} href={`/events/${event.id}`}>
                       <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
-                        {event.coverImage && (
-                          <div className="relative w-full h-48">
+                        {event.posterImage && (
+                          <div className="relative w-full aspect-square overflow-hidden">
                             <Image
-                              src={event.coverImage || "/placeholder.svg"}
+                              src={event.posterImage || "/placeholder.svg"}
                               alt={event.title}
                               fill
-                              className="object-cover"
+                              className="object-contain"
                             />
                           </div>
                         )}
