@@ -5,9 +5,11 @@ import { Montserrat } from "next/font/google";
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: "SiTiGroup",
+  description: "Cộng đồng Sinh viên Tình nguyện SiTiGroup - Keep Loving by Sharing",
+  icons: {
+    icon: "/siti-logo.png",
+  },
 }
 
 const montserrat = Montserrat({
