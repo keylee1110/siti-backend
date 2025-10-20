@@ -97,7 +97,7 @@ export default async function Home() {
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/1/545636935_1086757110298070_8396252798641870370_n.jpg",
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/L%E1%BB%9Bp%20h%E1%BB%8Dc%20t%C3%ACnh%20th%C6%B0%C6%A1ng%202024%20Spring.jpg",
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/556879944_1103540711953043_4826156978774986188_n.jpg",
-              "/diverse-community-gathering.png",
+              "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/518742394_1045044754469306_843951881576860076_n.jpg",
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/557933109_1112845174355930_8189570871197412941_n.jpg",
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/558470398_1112844284356019_1106005238634030267_n.jpg",
               "https://pub-0b7d9313ccd845eea585e4c55b5f51a6.r2.dev/slideshow/2/542109585_1080626000911181_3151581864008339212_n.jpg",

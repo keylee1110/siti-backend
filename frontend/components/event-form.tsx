@@ -293,7 +293,7 @@ export function EventForm({ event, onSuccess, onCancel }: EventFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Ảnh poster (2000x2000)</label>
+          <label className="block text-sm font-medium mb-2">Ảnh poster (1000x1000)</label>
           <div className="flex gap-4 items-start">
             <input
               type="file"

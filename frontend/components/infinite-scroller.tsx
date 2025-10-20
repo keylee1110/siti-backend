@@ -36,22 +36,29 @@ export function InfiniteScroller({ images, direction = "left", speed = "normal" 
   }, [isScrolling])
 
   useEffect(() => {
-    if (scrollerRef.current) {
-      const scrollerWidth = Array.from(scrollerRef.current.children).reduce(
-        (acc, child) => acc + child.clientWidth + 16, // 16 is the gap
-        0
-      )
-      setWidth(scrollerWidth / 2)
+    const handleResize = () => {
+      if (scrollerRef.current) {
+        const scrollerWidth = Array.from(scrollerRef.current.children).reduce(
+          (acc, child) => acc + child.clientWidth + 16, // 16 is the gap
+          0
+        )
+        setWidth(scrollerWidth / 2)
+      }
     }
-  }, [images])
+
+    handleResize()
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   const x = useMotionValue(0)
   const speedFactor = useRef(0)
 
   useEffect(() => {
     speedFactor.current = isScrolling
-      ? speed === "fast" ? 200 : speed === "normal" ? 100 : 50
-      : speed === "fast" ? 80 : speed === "normal" ? 40 : 20
+      ? speed === "fast" ? 400 : speed === "normal" ? 200 : 100
+      : speed === "fast" ? 160 : speed === "normal" ? 80 : 40
   }, [isScrolling, speed])
 
   useAnimationFrame((_t, delta) => {

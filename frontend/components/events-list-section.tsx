@@ -14,7 +14,7 @@ export function EventsListSection({ events }: EventsListSectionProps) {
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Sự kiện chính của SiTiGroup</h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {events.map((event) => (
             <div
               key={event.id}
@@ -26,7 +26,8 @@ export function EventsListSection({ events }: EventsListSectionProps) {
                     src={event.posterImage || "/placeholder.svg"}
                     alt={event.title}
                     fill
-                    className="object-contain"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}

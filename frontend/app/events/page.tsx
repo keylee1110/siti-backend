@@ -76,7 +76,7 @@ export default function EventsPage() {
               </div>
             ) : (
               <>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
                   {events.map((event) => (
                     <Link key={event.id} href={`/events/${event.id}`}>
                       <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
@@ -86,7 +86,7 @@ export default function EventsPage() {
                               src={event.posterImage || "/placeholder.svg"}
                               alt={event.title}
                               fill
-                              className="object-contain"
+                              className="object-cover"
                             />
                           </div>
                         )}
