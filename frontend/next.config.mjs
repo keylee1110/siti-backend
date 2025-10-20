@@ -1,9 +1,3 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -26,4 +20,15 @@ const nextConfig = {
   },
 }
 
-export default withBundleAnalyzer(nextConfig);
+const configPromise = (async () => {
+  if (process.env.ANALYZE === 'true') {
+    const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
+      enabled: true,
+    });
+    return withBundleAnalyzer(nextConfig);
+  }
+
+  return nextConfig;
+})();
+
+export default configPromise;
