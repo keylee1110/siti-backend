@@ -20,7 +20,7 @@ const nextConfig = {
   },
 }
 
-const configPromise = (async () => {
+export default async () => {
   if (process.env.ANALYZE === 'true') {
     const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
       enabled: true,
@@ -29,6 +29,4 @@ const configPromise = (async () => {
   }
 
   return nextConfig;
-})();
-
-export default configPromise;
+};
