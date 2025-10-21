@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import com.sitigroup.backend.core.ApiResponse;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,11 +32,17 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Admin login", description = "Login and receive JWT token in httpOnly cookie")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse res) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> login(@RequestBody Map<String, String> body, HttpServletResponse res) {
         String email = body.get("email");
         String password = body.get("password");
-        AdminUser user = repo.findByEmail(email).orElseThrow(() -> new RuntimeException("Invalid credentials"));
-        if (!encoder.matches(password, user.getPasswordHash())) throw new RuntimeException("Invalid credentials");
+        AdminUser user = repo.findByEmail(email).orElse(null);
+        if (user == null || !encoder.matches(password, user.getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error(Map.of(
+                            "type", "UNAUTHORIZED",
+                            "message", "Invalid credentials"
+                    ), null));
+        }
 
         String token = jwt.generate(user.getId(), user.getEmail(), user.getRole());
         String csrf = genCsrf();
@@ -53,12 +61,12 @@ public class AuthController {
 
         res.setHeader("X-CSRF-Token", csrf);
 
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity.ok(ApiResponse.ok(Map.of(
                 "message", "login ok",
                 "csrf", csrf,
                 "email", user.getEmail(),
                 "role", user.getRole()
-        ));
+        )));
     }
 
     @PostMapping("/logout")
@@ -74,28 +82,32 @@ public class AuthController {
         }
         res.addHeader("Set-Cookie", tokenCookie);
         res.addHeader("Set-Cookie", csrfCookie);
-        return ResponseEntity.ok(Map.of("message", "logout ok"));
+        return ResponseEntity.ok(ApiResponse.ok(Map.of("message", "logout ok")));
     }
 
     @GetMapping("/me")
     @Operation(summary = "Get current user", description = "Get information about currently logged in admin")
-    public ResponseEntity<?> me(@CookieValue(name = "siti_csrf", required = false) String csrfFromCookie) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> me(@CookieValue(name = "siti_csrf", required = false) String csrfFromCookie) {
         var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-            return ResponseEntity.status(401).body(Map.of("error", "unauthenticated"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error(Map.of(
+                            "type", "UNAUTHORIZED",
+                            "message", "Unauthenticated"
+                    ), null));
         }
         String email = (String) auth.getPrincipal();
         String role = auth.getAuthorities().stream().findFirst()
                 .map(a -> a.getAuthority().replace("ROLE_", ""))
                 .orElse(null);
 
-        var userData = Map.of(
+        var userData = Map.<String, Object>of(
                 "email", email,
                 "role", role,
                 "csrf", csrfFromCookie
         );
 
-        return ResponseEntity.ok(Map.of("data", userData));
+        return ResponseEntity.ok(ApiResponse.ok(userData));
     }
 
     private static String genCsrf() {
