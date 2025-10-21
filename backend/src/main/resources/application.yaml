@@ -44,3 +44,12 @@ management:
     health:
       show-details: always
 
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+app:
+  cookie:
+    secure: true
+

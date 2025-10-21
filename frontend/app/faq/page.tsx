@@ -25,7 +25,7 @@ const faqTopics = [
       },
       {
         question: "Hiện tại SiTiGroup có bao nhiêu thành viên?",
-        answer: ["Tính đến thời điểm hiện tại, SiTiGroup có hon 100 thành viên."],
+        answer: ["Tính đến thời điểm hiện tại, SiTiGroup có hơn 100 thành viên."],
       },
     ],
   },

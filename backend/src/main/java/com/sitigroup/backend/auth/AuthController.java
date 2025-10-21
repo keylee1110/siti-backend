@@ -25,8 +25,8 @@ public class AuthController {
     private final JwtService jwt;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    // @Value("${app.cookie.secure:false}")
-    private boolean cookieSecure = false;
+    @Value("${app.cookie.secure:false}")
+    private boolean cookieSecure;
 
     @PostMapping("/login")
     @Operation(summary = "Admin login", description = "Login and receive JWT token in httpOnly cookie")
