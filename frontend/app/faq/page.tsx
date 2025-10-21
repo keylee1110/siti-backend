@@ -93,35 +93,47 @@ export default function FAQPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">Câu hỏi thường gặp (FAQ)</h1>
-            
-            <div className="space-y-12">
-              {faqTopics.map((topic, topicIndex) => (
-                <div key={topicIndex}>
-                  <h2 className="text-2xl font-bold mb-6 border-b pb-2">{topic.title}</h2>
-                  <Accordion type="single" collapsible className="w-full space-y-4">
-                    {topic.questions.map((faq, faqIndex) => (
-                      <AccordionItem key={faqIndex} value={`item-${topicIndex}-${faqIndex}`} className="border rounded-lg bg-primary/10">
-                        <AccordionTrigger className="text-lg text-left font-semibold px-6 py-4 hover:no-underline">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-base space-y-3 p-6 pt-0">
-                          {faq.answer.map((line, lineIndex) => (
-                            <p key={lineIndex}>{line}</p>
-                          ))}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-              ))}
-            </div>
-
+      <main className="min-h-screen">
+        <section className="py-12 md:py-20 bg-gradient-to-br from-primary/10 to-accent/10">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Câu hỏi thường gặp</h1>
+            <p className="text-lg text-muted-foreground">
+              Tìm hiểu thêm về SiTiGroup qua các câu hỏi thường gặp.
+            </p>
           </div>
-        </div>
+        </section>
+
+        <section className="py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <div className="space-y-12">
+                {faqTopics.map((topic, topicIndex) => (
+                  <div key={topicIndex}>
+                    <h2 className="text-2xl font-bold mb-6 border-b pb-2">{topic.title}</h2>
+                    <Accordion type="single" collapsible className="w-full space-y-4">
+                      {topic.questions.map((faq, faqIndex) => (
+                        <AccordionItem
+                          key={faqIndex}
+                          value={`item-${topicIndex}-${faqIndex}`}
+                          className="border rounded-lg bg-primary/10"
+                        >
+                          <AccordionTrigger className="text-lg text-left font-semibold px-6 py-4 hover:no-underline">
+                            {faq.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="text-base space-y-3 p-6 pt-0">
+                            {faq.answer.map((line, lineIndex) => (
+                              <p key={lineIndex}>{line}</p>
+                            ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section> {/* <-- thêm dòng này */}
       </main>
       <Footer />
     </>

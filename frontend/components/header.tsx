@@ -22,10 +22,25 @@ export function Header() {
     { href: "/contact", label: "Liên hệ" },
   ]
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname === href) {
+      e.preventDefault()
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      })
+      // Close sheet if on mobile
+      setIsSheetOpen(false)
+    } else {
+      // Allow default navigation and close sheet on mobile
+      setIsSheetOpen(false)
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center font-bold text-xl">
+        <Link href="/" onClick={(e) => handleNavClick(e, '/')} className="flex items-center font-bold text-xl">
           <Image
             src="/siti-logo.png"
             alt="SiTiGroup Logo"
@@ -42,6 +57,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               className={cn(
                 "text-sm font-medium hover:text-primary transition-colors",
                 pathname === link.href && "text-primary"
@@ -63,7 +79,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="flex flex-col p-0">
               <div className="p-4 border-b">
-                <Link href="/" onClick={() => setIsSheetOpen(false)} className="flex items-center font-bold text-xl">
+                <Link href="/" onClick={(e) => handleNavClick(e, '/')} className="flex items-center font-bold text-xl">
                   <Image
                     src="/siti-logo.png"
                     alt="SiTiGroup Logo"
@@ -78,7 +94,7 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsSheetOpen(false)}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={cn(
                       "text-center p-3 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted text-lg font-medium",
                       pathname === link.href && "bg-accent text-accent-foreground"
