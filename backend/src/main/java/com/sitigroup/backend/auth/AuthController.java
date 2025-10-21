@@ -47,9 +47,12 @@ public class AuthController {
         String token = jwt.generate(user.getId(), user.getEmail(), user.getRole());
         String csrf = genCsrf();
 
-        // Set cookie via header
+        // Set cookie via header. In production (e.g. Render), where BACKEND_API_HOST is set,
+        // we use Secure and SameSite=None. For local dev, we use Lax and no Secure flag.
+        boolean isDeployed = System.getenv("BACKEND_API_HOST") != null && !System.getenv("BACKEND_API_HOST").isEmpty();
+
         String tokenCookie, csrfCookie;
-        if (cookieSecure) {
+        if (isDeployed) {
             tokenCookie = "siti_token=" + token + "; Path=/; HttpOnly; Secure; SameSite=None";
             csrfCookie = "siti_csrf=" + csrf  + "; Path=/; Secure; SameSite=None";
         } else {
@@ -72,8 +75,9 @@ public class AuthController {
     @PostMapping("/logout")
     @Operation(summary = "Admin logout", description = "Clear authentication cookies")
     public ResponseEntity<?> logout(HttpServletResponse res) {
+        boolean isDeployed = System.getenv("BACKEND_API_HOST") != null && !System.getenv("BACKEND_API_HOST").isEmpty();
         String tokenCookie, csrfCookie;
-        if (cookieSecure) {
+        if (isDeployed) {
             tokenCookie = "siti_token=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0";
             csrfCookie = "siti_csrf=; Path=/; Secure; SameSite=None; Max-Age=0";
         } else {
@@ -103,8 +107,9 @@ public class AuthController {
 
         // Refresh CSRF token
         String csrf = genCsrf();
+        boolean isDeployed = System.getenv("BACKEND_API_HOST") != null && !System.getenv("BACKEND_API_HOST").isEmpty();
         String csrfCookie;
-        if (cookieSecure) {
+        if (isDeployed) {
             csrfCookie = "siti_csrf=" + csrf  + "; Path=/; Secure; SameSite=None";
         } else {
             csrfCookie = "siti_csrf=" + csrf  + "; Path=/; SameSite=Lax";
