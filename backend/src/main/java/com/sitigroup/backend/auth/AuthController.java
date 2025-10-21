@@ -87,7 +87,7 @@ public class AuthController {
 
     @GetMapping("/me")
     @Operation(summary = "Get current user", description = "Get information about currently logged in admin")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> me(@CookieValue(name = "siti_csrf", required = false) String csrfFromCookie) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> me(HttpServletResponse res) {
         var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -101,10 +101,22 @@ public class AuthController {
                 .map(a -> a.getAuthority().replace("ROLE_", ""))
                 .orElse(null);
 
+        // Refresh CSRF token
+        String csrf = genCsrf();
+        String csrfCookie;
+        if (cookieSecure) {
+            csrfCookie = "siti_csrf=" + csrf  + "; Path=/; Secure; SameSite=None";
+        } else {
+            csrfCookie = "siti_csrf=" + csrf  + "; Path=/; SameSite=Lax";
+        }
+        res.addHeader("Set-Cookie", csrfCookie);
+        res.setHeader("X-CSRF-Token", csrf);
+
+
         var userData = Map.<String, Object>of(
                 "email", email,
                 "role", role,
-                "csrf", csrfFromCookie
+                "csrf", csrf
         );
 
         return ResponseEntity.ok(ApiResponse.ok(userData));
