@@ -1,7 +1,7 @@
 package com.sitigroup.backend.config;
 
-import com.sitigroup.backend.auth.CsrfDoubleSubmitFilter;
 import com.sitigroup.backend.auth.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
@@ -21,10 +21,14 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Value("${app.cors.allowed-origins:}")
     private String[] allowedOrigins;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CsrfDoubleSubmitFilter csrfDoubleSubmitFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,8 +47,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new CsrfDoubleSubmitFilter(), JwtAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(csrfDoubleSubmitFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
