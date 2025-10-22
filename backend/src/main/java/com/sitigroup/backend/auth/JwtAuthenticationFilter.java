@@ -27,7 +27,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 var auth = new UsernamePasswordAuthenticationToken(email, null,
                         List.of(new SimpleGrantedAuthority("ROLE_" + role)));
                 org.springframework.security.core.context.SecurityContextHolder.getContext().setAuthentication(auth);
-            } catch (Exception ignored) { }
+            } catch (Exception e) {
+                // Log the exception to see why token parsing is failing
+                logger.warn("Error parsing JWT token: " + e.getMessage());
+            }
         }
         chain.doFilter(req, res);
     }
