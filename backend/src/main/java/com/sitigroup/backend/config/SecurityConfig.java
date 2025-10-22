@@ -1,5 +1,6 @@
 package com.sitigroup.backend.config;
 
+import com.sitigroup.backend.auth.CsrfDoubleSubmitFilter;
 import com.sitigroup.backend.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
